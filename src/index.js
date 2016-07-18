@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Clipboard from 'clipboard';
 import {Converter} from 'showdown';
 
-const converter = new Converter();
+import './style.less';
+
+const converter = new Converter({
+  'noHeaderId': true
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -11,16 +16,23 @@ class App extends React.Component {
       markdown: '# Type your markdown here !'
     }
   }
+
+  componentDidMount() {
+    new Clipboard('#clipboard-button');
+  }
+
   onTextareaChange({target: {value: markdown}}) {
     this.setState({markdown});
   }
 
   render() {
+    const renderedHtml = converter.makeHtml(this.state.markdown);
     return (
       <div>
         <textarea onChange={::this.onTextareaChange} value={this.state.markdown}/>
+        <button id="clipboard-button" data-clipboard-text={renderedHtml}>Copy to clipboard</button>
         <div>
-          {converter.makeHtml(this.state.markdown)}
+          {renderedHtml}
         </div>
       </div>
     );

@@ -12,6 +12,10 @@ var config = {
       {
         test: /\.js?/,
         loader: 'babel'
+      },
+      {
+        test: /\.less$/,
+        loader: 'style!css!less'
       }
     ]
   },
